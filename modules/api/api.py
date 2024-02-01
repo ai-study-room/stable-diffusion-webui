@@ -731,16 +731,18 @@ class Api:
             ram = { 'error': f'{err}' }
         try:
             import torch
-            if torch.cuda.is_available():
-                s = torch.cuda.mem_get_info()
+            import torch_npu
+            import transfer_to_npu
+            if torch.npu.is_available():
+                s = torch.npu.mem_get_info()
                 system = { 'free': s[0], 'used': s[1] - s[0], 'total': s[1] }
-                s = dict(torch.cuda.memory_stats(shared.device))
+                s = dict(torch.npu.memory_stats(shared.device))
                 allocated = { 'current': s['allocated_bytes.all.current'], 'peak': s['allocated_bytes.all.peak'] }
                 reserved = { 'current': s['reserved_bytes.all.current'], 'peak': s['reserved_bytes.all.peak'] }
                 active = { 'current': s['active_bytes.all.current'], 'peak': s['active_bytes.all.peak'] }
                 inactive = { 'current': s['inactive_split_bytes.all.current'], 'peak': s['inactive_split_bytes.all.peak'] }
                 warnings = { 'retries': s['num_alloc_retries'], 'oom': s['num_ooms'] }
-                cuda = {
+                npu = {
                     'system': system,
                     'active': active,
                     'allocated': allocated,
@@ -749,10 +751,10 @@ class Api:
                     'events': warnings,
                 }
             else:
-                cuda = {'error': 'unavailable'}
+                npu = {'error': 'unavailable'}
         except Exception as err:
-            cuda = {'error': f'{err}'}
-        return models.MemoryResponse(ram=ram, cuda=cuda)
+            npu = {'error': f'{err}'}
+        return models.MemoryResponse(ram=ram, npu=npu)
 
     def get_extensions_list(self):
         from modules import extensions

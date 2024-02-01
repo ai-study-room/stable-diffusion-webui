@@ -10,6 +10,8 @@ https://github.com/CompVis/taming-transformers
 # See more details in LICENSE.
 
 import torch
+import torch_npu
+import transfer_to_npu
 import torch.nn as nn
 import numpy as np
 import pytorch_lightning as pl

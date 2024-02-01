@@ -6,6 +6,8 @@ https://github.com/samb-t/unleashing-transformers/blob/master/models/vqgan.py
 
 '''
 import torch
+import torch_npu
+import transfer_to_npu
 import torch.nn as nn
 import torch.nn.functional as F
 from basicsr.utils import get_root_logger

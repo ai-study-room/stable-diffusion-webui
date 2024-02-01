@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import torch
+import torch_npu
+import transfer_to_npu
 
 import sgm.models.diffusion
 import sgm.modules.diffusionmodules.denoiser_scaling

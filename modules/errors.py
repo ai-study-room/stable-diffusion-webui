@@ -105,6 +105,8 @@ def check_versions():
     from modules import shared
 
     import torch
+    import torch_npu
+    import transfer_to_npu
     import gradio
 
     expected_torch_version = "2.0.0"

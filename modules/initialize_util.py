@@ -18,6 +18,8 @@ def gradio_server_name():
 
 def fix_torch_version():
     import torch
+    import torch_npu
+    import transfer_to_npu
 
     # Truncate version number of nightly/local build of PyTorch to not cause exceptions with CodeFormer or Safetensors
     if ".dev" in torch.__version__ or "+git" in torch.__version__:

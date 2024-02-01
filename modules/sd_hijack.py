@@ -1,4 +1,6 @@
 import torch
+import torch_npu
+import transfer_to_npu
 from torch.nn.functional import silu
 from types import MethodType
 

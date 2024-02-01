@@ -1,6 +1,8 @@
 from transformers import BertPreTrainedModel, BertConfig
 import torch.nn as nn
 import torch
+import torch_npu
+import transfer_to_npu
 from transformers.models.xlm_roberta.configuration_xlm_roberta import XLMRobertaConfig
 from transformers import XLMRobertaModel,XLMRobertaTokenizer
 from typing import Optional

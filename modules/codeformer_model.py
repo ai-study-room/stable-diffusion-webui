@@ -2,6 +2,8 @@ import os
 
 import cv2
 import torch
+import torch_npu
+import transfer_to_npu
 
 import modules.face_restoration
 import modules.shared

@@ -1154,6 +1154,8 @@ def create_ui():
 
 def versions_html():
     import torch
+    import torch_npu
+    import transfer_to_npu
     import launch
 
     python_version = ".".join([str(x) for x in sys.version_info[0:3]])

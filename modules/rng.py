@@ -1,4 +1,6 @@
 import torch
+import torch_npu
+import transfer_to_npu
 
 from modules import devices, rng_philox, shared
 

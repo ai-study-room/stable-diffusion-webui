@@ -1,4 +1,6 @@
 import torch
+import torch_npu
+import transfer_to_npu
 from modules import prompt_parser, devices, sd_samplers_common
 
 from modules.shared import opts, state

@@ -1,6 +1,8 @@
 """SAMPLING ONLY."""
 
 import torch
+import torch_npu
+import transfer_to_npu
 
 from .uni_pc import NoiseScheduleVP, model_wrapper, UniPC
 from modules import shared, devices

@@ -1,6 +1,8 @@
 import os
 
 import torch
+import torch_npu
+import transfer_to_npu
 
 from modules import shared, paths, sd_disable_initialization, devices
 

@@ -5,6 +5,8 @@ from pathlib import Path
 import re
 
 import torch
+import torch_npu
+import transfer_to_npu
 import torch.hub
 
 from torchvision import transforms

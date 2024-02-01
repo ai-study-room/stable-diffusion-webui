@@ -2,6 +2,8 @@ import os
 import numpy as np
 import PIL
 import torch
+import torch_npu
+import transfer_to_npu
 from PIL import Image
 from torch.utils.data import Dataset, DataLoader, Sampler
 from torchvision import transforms

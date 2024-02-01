@@ -1,6 +1,8 @@
 import os
 
 import torch
+import torch_npu
+import transfer_to_npu
 from torch import nn
 from modules import devices, paths, shared
 
@@ -53,7 +55,8 @@ def model():
             download_model(model_path, 'https://github.com/AUTOMATIC1111/stable-diffusion-webui/releases/download/v1.0.0-pre/' + model_name)
 
         loaded_model = VAEApprox()
-        loaded_model.load_state_dict(torch.load(model_path, map_location='cpu' if devices.device.type != 'cuda' else None))
+        print(f"--------model() model_path={model_path}, device.type={devices.device.type}--------")
+        loaded_model.load_state_dict(torch.load(model_path, map_location='cpu' if devices.device.type != 'npu' else "npu:0"))
         loaded_model.eval()
         loaded_model.to(devices.device, devices.dtype)
         sd_vae_approx_models[model_name] = loaded_model

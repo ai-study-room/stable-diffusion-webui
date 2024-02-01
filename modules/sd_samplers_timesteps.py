@@ -1,4 +1,6 @@
 import torch
+import torch_npu
+import transfer_to_npu
 import inspect
 import sys
 from modules import devices, sd_samplers_common, sd_samplers_timesteps_impl

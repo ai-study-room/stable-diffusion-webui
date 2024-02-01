@@ -1,6 +1,8 @@
 import logging
 
 import torch
+import torch_npu
+import transfer_to_npu
 from torch import Tensor
 import platform
 from modules.sd_hijack_utils import CondFunc

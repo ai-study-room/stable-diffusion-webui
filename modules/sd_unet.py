@@ -1,4 +1,6 @@
 import torch.nn
+import torch_npu
+import transfer_to_npu
 
 from modules import script_callbacks, shared, devices
 

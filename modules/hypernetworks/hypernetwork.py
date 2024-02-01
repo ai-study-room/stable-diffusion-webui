@@ -7,6 +7,8 @@ from contextlib import closing
 
 import modules.textual_inversion.dataset
 import torch
+import torch_npu
+import transfer_to_npu
 import tqdm
 from einops import rearrange, repeat
 from ldm.util import default
@@ -564,7 +566,7 @@ def train_hypernetwork(id_task, hypernetwork_name: str, learn_rate: float, batch
             print("Cannot resume from saved optimizer!")
             print(e)
 
-    scaler = torch.cuda.amp.GradScaler()
+    scaler = torch.npu.amp.GradScaler()
 
     batch_size = ds.batch_size
     gradient_step = ds.gradient_step
@@ -680,9 +682,9 @@ def train_hypernetwork(id_task, hypernetwork_name: str, learn_rate: float, batch
                     last_saved_image = os.path.join(images_dir, forced_filename)
                     hypernetwork.eval()
                     rng_state = torch.get_rng_state()
-                    cuda_rng_state = None
-                    if torch.cuda.is_available():
-                        cuda_rng_state = torch.cuda.get_rng_state_all()
+                    npu_rng_state = None
+                    if torch.npu.is_available():
+                        npu_rng_state = torch.npu.get_rng_state_all()
                     shared.sd_model.cond_stage_model.to(devices.device)
                     shared.sd_model.first_stage_model.to(devices.device)
 
@@ -719,8 +721,8 @@ def train_hypernetwork(id_task, hypernetwork_name: str, learn_rate: float, batch
                         shared.sd_model.cond_stage_model.to(devices.cpu)
                         shared.sd_model.first_stage_model.to(devices.cpu)
                     torch.set_rng_state(rng_state)
-                    if torch.cuda.is_available():
-                        torch.cuda.set_rng_state_all(cuda_rng_state)
+                    if torch.npu.is_available():
+                        torch.npu.set_rng_state_all(npu_rng_state)
                     hypernetwork.train()
                     if image is not None:
                         shared.state.assign_current_image(image)

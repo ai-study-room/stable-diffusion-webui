@@ -6,6 +6,8 @@ import numpy as np
 import zlib
 from PIL import Image, ImageDraw
 import torch
+import torch_npu
+import transfer_to_npu
 
 
 class EmbeddingEncoder(json.JSONEncoder):

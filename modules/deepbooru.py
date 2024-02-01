@@ -2,6 +2,8 @@ import os
 import re
 
 import torch
+import torch_npu
+import transfer_to_npu
 import numpy as np
 
 from modules import modelloader, paths, deepbooru_model, devices, images, shared

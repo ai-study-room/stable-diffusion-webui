@@ -3,6 +3,8 @@ from collections import namedtuple
 from contextlib import closing
 
 import torch
+import torch_npu
+import transfer_to_npu
 import tqdm
 import html
 import datetime
@@ -206,6 +208,8 @@ class EmbeddingDatabase:
                     continue
 
     def load_textual_inversion_embeddings(self, force_reload=False):
+        import torch_npu
+        torch_npu.npu.set_device("npu:0")
         if not force_reload:
             need_reload = False
             for embdir in self.embedding_dirs.values():
@@ -481,7 +485,7 @@ def train_embedding(id_task, embedding_name, learn_rate, batch_size, gradient_st
         else:
             print("No saved optimizer exists in checkpoint")
 
-    scaler = torch.cuda.amp.GradScaler()
+    scaler = torch.npu.amp.GradScaler()
 
     batch_size = ds.batch_size
     gradient_step = ds.gradient_step

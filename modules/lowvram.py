@@ -1,4 +1,6 @@
 import torch
+import torch_npu
+import transfer_to_npu
 from modules import devices, shared
 
 module_in_gpu = None

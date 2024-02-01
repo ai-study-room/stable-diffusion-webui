@@ -3,6 +3,8 @@
 from collections import OrderedDict
 import math
 import torch
+import torch_npu
+import transfer_to_npu
 import torch.nn as nn
 import torch.nn.functional as F
 

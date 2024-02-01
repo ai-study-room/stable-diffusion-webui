@@ -2,6 +2,8 @@ import math
 from collections import namedtuple
 
 import torch
+import torch_npu
+import transfer_to_npu
 
 from modules import prompt_parser, devices, sd_hijack
 from modules.shared import opts

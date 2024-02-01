@@ -8,6 +8,8 @@ import hashlib
 from dataclasses import dataclass, field
 
 import torch
+import torch_npu
+import transfer_to_npu
 import numpy as np
 from PIL import Image, ImageOps
 import random

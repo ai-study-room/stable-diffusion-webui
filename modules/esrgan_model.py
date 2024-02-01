@@ -2,6 +2,8 @@ import sys
 
 import numpy as np
 import torch
+import torch_npu
+import transfer_to_npu
 from PIL import Image
 
 import modules.esrgan_model_arch as arch

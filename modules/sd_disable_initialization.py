@@ -1,6 +1,8 @@
 import ldm.modules.encoders.modules
 import open_clip
 import torch
+import torch_npu
+import transfer_to_npu
 import transformers.utils.hub
 
 from modules import shared

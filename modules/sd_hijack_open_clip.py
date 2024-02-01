@@ -1,5 +1,8 @@
 import open_clip.tokenizer
 import torch
+import torch_npu
+torch_npu.npu.set_device("npu:0")
+import transfer_to_npu
 
 from modules import sd_hijack_clip, devices
 from modules.shared import opts
@@ -31,6 +34,7 @@ class FrozenOpenCLIPEmbedderWithCustomWords(sd_hijack_clip.FrozenCLIPEmbedderWit
 
     def encode_embedding_init_text(self, init_text, nvpt):
         ids = tokenizer.encode(init_text)
+        print(f"--------encode_embedding_init_text device={devices.device} ids={ids}--------")
         ids = torch.asarray([ids], device=devices.device, dtype=torch.int)
         embedded = self.wrapped.model.token_embedding.wrapped(ids).squeeze(0)
 

@@ -1,6 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torch_npu
+import transfer_to_npu
 
 from modules import devices
 

@@ -379,11 +379,11 @@ def prepare_environment():
         startup_timer.record("install torch")
 
     if args.use_ipex:
-        args.skip_torch_cuda_test = True
-    if not args.skip_torch_cuda_test and not check_run_python("import torch; assert torch.cuda.is_available()"):
+        args.skip_torch_npu_test = True
+    if not args.skip_torch_npu_test and not check_run_python("import torch;import torch_npu; assert torch.npu.is_available()"):
         raise RuntimeError(
             'Torch is not able to use GPU; '
-            'add --skip-torch-cuda-test to COMMANDLINE_ARGS variable to disable this check'
+            'add --skip-torch-npu-test to COMMANDLINE_ARGS variable to disable this check'
         )
     startup_timer.record("torch GPU test")
 
@@ -447,8 +447,8 @@ def configure_for_tests():
     if "--ckpt" not in sys.argv:
         sys.argv.append("--ckpt")
         sys.argv.append(os.path.join(script_path, "test/test_files/empty.pt"))
-    if "--skip-torch-cuda-test" not in sys.argv:
-        sys.argv.append("--skip-torch-cuda-test")
+    if "--skip-torch-npu-test" not in sys.argv:
+        sys.argv.append("--skip-torch-npu-test")
     if "--disable-nan-check" not in sys.argv:
         sys.argv.append("--disable-nan-check")
 

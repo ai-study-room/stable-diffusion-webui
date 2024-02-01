@@ -3,6 +3,8 @@ import contextlib
 from functools import lru_cache
 
 import torch
+import torch_npu
+import transfer_to_npu
 from modules import errors, shared
 
 if sys.platform == "darwin":
@@ -23,16 +25,16 @@ def has_mps() -> bool:
         return mac_specific.has_mps
 
 
-def get_cuda_device_string():
+def get_npu_device_string():
     if shared.cmd_opts.device_id is not None:
-        return f"cuda:{shared.cmd_opts.device_id}"
+        return f"npu:{shared.cmd_opts.device_id}"
 
-    return "cuda"
+    return "npu"
 
 
 def get_optimal_device_name():
-    if torch.cuda.is_available():
-        return get_cuda_device_string()
+    if torch.npu.is_available():
+        return get_npu_device_string()
 
     if has_mps():
         return "mps"
@@ -55,11 +57,13 @@ def get_device_for(task):
 
 
 def torch_gc():
+    import torch_npu
+    torch.npu.set_device("npu:0")
 
-    if torch.cuda.is_available():
-        with torch.cuda.device(get_cuda_device_string()):
-            torch.cuda.empty_cache()
-            torch.cuda.ipc_collect()
+    if torch.npu.is_available():
+        with torch.npu.device(get_npu_device_string()):
+            torch.npu.empty_cache()
+            #torch.npu.ipc_collect()
 
     if has_mps():
         mac_specific.torch_mps_gc()
@@ -69,19 +73,19 @@ def torch_gc():
 
 
 def enable_tf32():
-    if torch.cuda.is_available():
+    if torch.npu.is_available():
 
         # enabling benchmark option seems to enable a range of cards to do fp16 when they otherwise can't
         # see https://github.com/AUTOMATIC1111/stable-diffusion-webui/pull/4407
-        device_id = (int(shared.cmd_opts.device_id) if shared.cmd_opts.device_id is not None and shared.cmd_opts.device_id.isdigit() else 0) or torch.cuda.current_device()
-        if torch.cuda.get_device_capability(device_id) == (7, 5) and torch.cuda.get_device_name(device_id).startswith("NVIDIA GeForce GTX 16"):
+        device_id = (int(shared.cmd_opts.device_id) if shared.cmd_opts.device_id is not None and shared.cmd_opts.device_id.isdigit() else 0) or torch.npu.current_device()
+        if torch.npu.get_device_capability(device_id) == (7, 5) and torch.npu.get_device_name(device_id).startswith("NVIDIA GeForce GTX 16"):
             torch.backends.cudnn.benchmark = True
 
-        torch.backends.cuda.matmul.allow_tf32 = True
+        torch.backends.npu.matmul.allow_tf32 = True
         torch.backends.cudnn.allow_tf32 = True
 
 
-errors.run(enable_tf32, "Enabling TF32")
+#errors.run(enable_tf32, "Enabling TF32")
 
 cpu: torch.device = torch.device("cpu")
 device: torch.device = None
@@ -113,11 +117,11 @@ def autocast(disable=False):
     if dtype == torch.float32 or shared.cmd_opts.precision == "full":
         return contextlib.nullcontext()
 
-    return torch.autocast("cuda")
+    return torch.autocast("npu")
 
 
 def without_autocast(disable=False):
-    return torch.autocast("cuda", enabled=False) if torch.is_autocast_enabled() and not disable else contextlib.nullcontext()
+    return torch.autocast("npu", enabled=False) if torch.is_autocast_enabled() and not disable else contextlib.nullcontext()
 
 
 class NansException(Exception):
@@ -157,6 +161,7 @@ def first_time_calculation():
     spends about 2.7 seconds doing that, at least wih NVidia.
     """
 
+    print(f"--------first_time_calculation device={device},dtype={dtype}--------")
     x = torch.zeros((1, 1)).to(device, dtype)
     linear = torch.nn.Linear(1, 1).to(device, dtype)
     linear(x)

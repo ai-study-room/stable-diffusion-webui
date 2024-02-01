@@ -1,4 +1,6 @@
 import torch
+import torch_npu
+import transfer_to_npu
 import tqdm
 import k_diffusion.sampling
 

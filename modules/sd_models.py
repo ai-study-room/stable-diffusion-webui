@@ -4,6 +4,8 @@ import sys
 import threading
 
 import torch
+import torch_npu
+import transfer_to_npu
 import re
 import safetensors.torch
 from omegaconf import OmegaConf, ListConfig

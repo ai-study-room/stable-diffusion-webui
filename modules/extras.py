@@ -5,6 +5,8 @@ import json
 
 
 import torch
+import torch_npu
+import transfer_to_npu
 import tqdm
 
 from modules import shared, images, sd_models, sd_vae, sd_models_config, errors

@@ -12,6 +12,8 @@
 
 from functools import partial
 import torch
+import torch_npu
+import transfer_to_npu
 from torch import Tensor
 from torch.utils.checkpoint import checkpoint
 import math

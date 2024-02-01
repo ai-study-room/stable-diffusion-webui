@@ -1,4 +1,4 @@
-"""RNG imitiating torch cuda randn on CPU. You are welcome.
+"""RNG imitiating torch npu randn on CPU. You are welcome.
 
 Usage:
 
@@ -75,7 +75,7 @@ def box_muller(x, y):
 
 
 class Generator:
-    """RNG that produces same outputs as torch.randn(..., device='cuda') on CPU"""
+    """RNG that produces same outputs as torch.randn(..., device='npu') on CPU"""
 
     def __init__(self, seed):
         self.seed = seed
